@@ -66,3 +66,10 @@ while flag:
                         #     break
         if account_not_exit == 0:
             print("您输入的账号不存在！")
+
+
+            '''
+                1.用户名密码相同
+                2.用户名密码不匹配
+                3.用户名不存
+            '''
