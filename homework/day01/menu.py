@@ -24,7 +24,6 @@ menu = {
 }
 
 is_run = True  # 是否终止
-second_run = True
 
 while is_run:
     level = 2
@@ -40,6 +39,7 @@ while is_run:
         is_run = False
         break
     elif menu.get(first_menu, "") != "" and level == 2:
+        second_run = True
         while second_run:
             print("----------------------------查询 #" + first_menu + "# 结果----------------------------------------")
             s_count = 1
@@ -70,6 +70,7 @@ while is_run:
                         continue
                     elif last_input == "*":
                         third_run = False
+                        second_run = False
                         break
                     elif last_input == "q":
                         second_run = False
