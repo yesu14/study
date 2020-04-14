@@ -1,6 +1,6 @@
 #  @Author  :RG
 #  @Time    :2020-04-14 下午 14:03
-#  @Note    :
+#  @Note    :测试git
 
 items = [("iphone",5000),("samsung",4000),("huawei",3000),("xiaomi",2000)]
 balance = 0
