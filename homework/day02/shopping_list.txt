@@ -1,0 +1,2 @@
+user01,[iphone,xiaomi]
+user02,[xiaomi,huawei,samsung]
