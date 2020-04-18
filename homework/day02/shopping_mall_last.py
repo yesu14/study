@@ -13,7 +13,7 @@ swich_buy_item = True
 str_login = "Which system do you want to login?\n\033[31m1.Buyer\n2.Seller\n\033[0mYour choise:"
 str_buyer = "\033[33mWelcome to the RG Mall!\033[0m"
 str_seller = "\033[32mWelcome to the Seller System!\033[0m"
-str_welcome_buyer = "Welcome\033[7;31m %s \033[0mto the RG Mall".center(50, "*")
+str_welcome = "Welcome\033[7;31m %s \033[0mto the RG Mall".center(50, "*")
 str_welcome_seller = "Welcome\033[7;31m %s \033[0mto the Seller System".center(50, "*")
 str_wrong_msg = "\033[31mYour input is wrong,please try again later!\033[0m"
 str_account_not_exist_msg = "\033[31mAccount does not exist,please try again later!\033[0m"
@@ -40,20 +40,24 @@ balance = 0 #余额
 
 #展示商品
 def show_item():
+    count = 0
     with open("items.txt", "r", encoding="utf-8") as items_file:
-        count = 1
         for item in items_file:
+            count += 1
             _item = item.strip().split(",")
             print("${num}.${item}:${price}".format(num=count, item=_item[0], price=_item[1]))
-            count += 1
+        return count
 
-def login(username,password,file):
+#登录 type=1买家，type=2卖家 file=(买家:user.txt,卖家:seller.txt)
+def login(type,username,password,file):
     with open(file,"r",encoding="utf-8") as user_file:
         for line in user_file:
             _line = line.strip().split(",") #解析用户名和密码，文件存储格式为username,password
             if username == _line[0]:
                 if password == _line[1]:
-                    print(str_welcome_seller % (username))
+                    print(str_welcome % (username))
+                    if type == 1:
+                        return 1,_line[2]
                     return 1
                 else:
                     print(str_account_wrong_msg)
@@ -61,8 +65,6 @@ def login(username,password,file):
                 break
         print(str_account_not_exist_msg)
         return 0
-
-
 
 #卖家请求登录时
 def seller_login(swich_seller_login,swich_seller_item):
@@ -72,7 +74,7 @@ def seller_login(swich_seller_login,swich_seller_item):
         username = input(str_input_username)
         password = input(str_input_password)
 
-        if login(username,password,"seller.txt") == 1:
+        if login(2,username,password,"seller.txt") == 1:
             while swich_seller_item:
                 show_item()
                 print(str_order_instructions)
@@ -110,6 +112,41 @@ def seller_login(swich_seller_login,swich_seller_item):
                 else:
                     print(str_order_wrong)
 
+#买家登录时
+def show_shopping_list(username):
+    with open("shopping_list.txt", "r", encoding="utf-8") as shopping_list:
+        for line in shopping_list.readlines():
+            _line = line.strip("\n").split(",", 1)
+            if username == _line[0]:
+                print("Your shopping list :")
+                list = _line[1].split(",")
+                for i, s_list in enumerate(list):
+                    print(i, ".", s_list)
+                break
+
+#修改用户文件
+def modify_user_file(username,balance):
+    with open("user.txt","w+",encoding="utf-8") as user_file:
+        for line in user_file:
+            _line = line.strip("\n").split(",")
+            if username == _line[0]:
+                line = line[0] + "," + balance + "\n"
+            user_file.write(line)
+            user_file.flush()
+#修改购买列表
+def modify_shopping_list(username, item):
+    with open("shopping_list.txt", "w+", encoding="utf-8") as shopping_list_file:
+        for line in shopping_list_file:
+            _line = line.strip("\n").split(",")
+            if username == _line[0]:
+                # TODO 数组 不能跟字符串直接+  需要处理 shopping_line[1]不能这么写
+                items = (line.strip().strip("[").strip("]")).replace(_line[0] + ",", "")
+                _list = items.split(",")
+                _list.append(item)
+                line = _line[0] + "," + str(_list)
+            shopping_list_file.write(line)
+            shopping_list_file.flush()
+#买家请求登录时
 def user_login():
     # 进入买家系统 可购买物品
     print(str_buyer)
@@ -117,167 +154,38 @@ def user_login():
     while swich_buyer_login:
         username = input(str_input_username)
         password = input(str_input_password)
-        if login(username,password,"user.txt") == 1:
-            #TODO
-            # while
+        result = login(1, username, password, "user.txt")
+        if result[0] == 1:
+            print(str_balance % (result[1]))
+            balance = int(result[1])
 
-        with open("user.txt", "r", encoding="utf-8") as user_file:
-            while swich_buy_item:
-                for line in user_file:
-                    _line = line.strip("\n").split(",")
-                    if username == _line[0]:
-                        if password == _line[1]:
-                            print(str_welcome_buyer % (username))
-                            print(str_balance % (_line[2]))
-                            balance = int(_line[2])
+            show_shopping_list() #展示购物列表
+            print("Product list ".center(50, "*"))
+            item_count = show_item() #展示商品列表
+            shopping_input = input(str_input_buy_msg)
+            if shopping_input.isdigit() and (int(shopping_input) > 0 and int(shopping_input) <= item_count):
+                with open("items.txt", "r", encoding="utf-8") as items_file:
+                    count = 0
+                    for line in items_file:
+                        count += 1
+                        _line = line.strip("\n").split(",")
+                        if count == int(shopping_input):
+                            if balance >= int(_line[1]): #余额大于等于商品价格时
+                                balance = balance - int(_line[1])  # 设置余额
 
-                            with open("shopping_list.txt", "r", encoding="utf-8") as shopping_list:
-                                for line in shopping_list.readlines():
-                                    _line = line.strip("\n").split(",", 1)
-                                    if username == _line[0]:
-                                        print("Your shopping list :")
-                                        list = _line[1].split(",")
-                                        for i, s_list in enumerate(list):
-                                            print(i, ".", s_list)
-                                        break
-                            count_product = 0;
-                            print("Product list ".center(50, "*"))
-                            with open("items.txt", "r", encoding="utf-8") as items_file:
-                                for i, line in enumerate(items_file.readlines()):
-                                    _item = line.strip("\n").split(",")
-                                    print(i + 1, ".", _item[0], _item[1])
-                                    count_product += 1
-                                shopping_input = input(str_input_buy_msg)
-                                if shopping_input.isdigit() and (
-                                        int(shopping_input) > 0 and int(shopping_input) <= count_product):
-                                    with open("items.txt", "r", encoding="utf-8") as items_file2:
-                                        for i, line in enumerate(items_file2.readlines()):
-                                            _item = line.strip("\n").split(",")
-                                            if i + 1 == int(shopping_input):
-                                                if balance >= int(_item[1]):
-                                                    balance = balance - int(_item[1])  # 设置余额
-                                                    user_file_new = ""
-                                                    item_file_new = ""
-                                                    for user in user_file.readlines():
-                                                        user_file_line = user.strip("\n").split(",")
-                                                        if username == user_file_line[0]:
-                                                            user_file_new = user_file_line[0] + "," + balance + "\n"
-                                                            continue
-                                                        user_file_new += user
-                                                    shopping_file_new = ""
-                                                    with open("shopping_list.txt", "r",
-                                                              encoding="utf-8") as shopping_file:
-                                                        for shopping in shopping_file.readlines():
-                                                            shopping_line = shopping.strip("\n").split(",")
-                                                            if username == shopping_line[0]:
-                                                                # TODO 数组 不能跟字符串直接+  需要处理 shopping_line[1]不能这么写
-                                                                s = (
-                                                                    shopping.strip("\n").strip("[").strip("]")).replace(
-                                                                    shopping_line[0] + ",", "")
-                                                                print(s)
-                                                                _list = s.split(",")
-                                                                _list.append(_item[0])
-                                                                shopping_file_new += shopping_line[0] + "," + str(_list)
-                                                                continue
-                                                            shopping_file_new += str(shopping)
-                                                    # 修改用户文件里的余额
-                                                    with open("user.txt", "w", encoding="utf-8") as new_file_user:
-                                                        new_file_user.write(user_file_new)
-                                                    # 添加购买商品(shopping_list.txt)
-                                                    with open("shopping_list.txt", "w",
-                                                              encoding="utf-8") as new_file_items:
-                                                        new_file_items.write(shopping_file_new)
-                                                    print("Successful purchase!")
-                                                else:
-                                                    print(str_balance_not_enough)
-                                else:
-                                    print(str_wrong_msg)
-                        else:
-                            print(str_account_wrong_msg)
-                            break
-            print(str_account_not_exist_msg)
+                                modify_user_file(username,balance)
+                                modify_shopping_list(username,_line[0])
 
-
+                                print("Successful purchase!")
+                            else:
+                                print(str_balance_not_enough)
+            else:
+                print(str_wrong_msg)
 
 while swich_system:
     choise_system = input(str_login)
     if choise_system == str_choise_buyer:
         # 进入买家系统 可购买物品
-        print(str_buyer)
-        swich_buyer_login = True
-        while swich_buyer_login:
-            username = input(str_input_username)
-            password = input(str_input_password)
-            with open("user.txt","r",encoding="utf-8") as user_file:
-                while swich_buy_item:
-                    for line in user_file:
-                        _line = line.strip("\n").split(",")
-                        if username == _line[0]:
-                            if password == _line[1]:
-                                print(str_welcome_buyer %(username))
-                                print(str_balance %(_line[2]))
-                                balance = int(_line[2])
-
-                                with open("shopping_list.txt","r",encoding="utf-8") as shopping_list:
-                                    for line in shopping_list.readlines():
-                                        _line = line.strip("\n").split(",",1)
-                                        if username == _line[0]:
-                                            print("Your shopping list :")
-                                            list = _line[1].split(",")
-                                            for i,s_list in enumerate(list):
-                                                print(i,".",s_list)
-                                            break
-                                count_product = 0;
-                                print("Product list ".center(50,"*"))
-                                with open("items.txt","r",encoding="utf-8") as items_file:
-                                    for i,line in enumerate(items_file.readlines()):
-                                        _item = line.strip("\n").split(",")
-                                        print(i + 1, ".", _item[0], _item[1])
-                                        count_product +=1
-                                    shopping_input = input(str_input_buy_msg)
-                                    if shopping_input.isdigit() and (int(shopping_input)>0 and int(shopping_input)<=count_product):
-                                        with open("items.txt", "r", encoding="utf-8") as items_file2:
-                                            for i,line in enumerate(items_file2.readlines()):
-                                                _item = line.strip("\n").split(",")
-                                                if i+1 == int(shopping_input):
-                                                   if balance >= int(_item[1]):
-                                                       balance = balance-int(_item[1]) #设置余额
-                                                       user_file_new = ""
-                                                       item_file_new = ""
-                                                       for user in user_file.readlines():
-                                                           user_file_line = user.strip("\n").split(",")
-                                                           if username == user_file_line[0]:
-                                                               user_file_new = user_file_line[0]+","+balance+"\n"
-                                                               continue
-                                                           user_file_new += user
-                                                       shopping_file_new = ""
-                                                       with open("shopping_list.txt", "r", encoding="utf-8") as shopping_file:
-                                                            for shopping in shopping_file.readlines():
-                                                                shopping_line = shopping.strip("\n").split(",")
-                                                                if username == shopping_line[0]:
-                                                                    #TODO 数组 不能跟字符串直接+  需要处理 shopping_line[1]不能这么写
-                                                                    s = (shopping.strip("\n").strip("[").strip("]")).replace(shopping_line[0]+",","")
-                                                                    print(s)
-                                                                    _list = s.split(",")
-                                                                    _list.append(_item[0])
-                                                                    shopping_file_new += shopping_line[0]+","+str(_list)
-                                                                    continue
-                                                                shopping_file_new += str(shopping)
-                                                        # 修改用户文件里的余额
-                                                       with open("user.txt","w",encoding="utf-8") as new_file_user:
-                                                            new_file_user.write(user_file_new)
-                                                        # 添加购买商品(shopping_list.txt)
-                                                       with open("shopping_list.txt","w",encoding="utf-8") as new_file_items:
-                                                            new_file_items.write(shopping_file_new)
-                                                       print("Successful purchase!")
-                                                   else:
-                                                       print(str_balance_not_enough)
-                                    else:
-                                        print(str_wrong_msg)
-                            else:
-                                print(str_account_wrong_msg)
-                                break
-                print(str_account_not_exist_msg)
+            user_login()
     elif choise_system == str_choise_seller:
         seller_login(True,True)
-
