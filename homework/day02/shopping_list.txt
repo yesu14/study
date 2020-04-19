@@ -1,2 +1,2 @@
-user01,[iphone,xiaomi]
+user01,[iphone,xiaomi,huawei,samsung]
 user02,[xiaomi,huawei,samsung]
