@@ -1,0 +1,26 @@
+<data>
+    <user name="user01">
+        <age>23</age>
+        <password u="yes">12345haha</password>
+        <sex>m</sex>
+        <marrid isTrue="yes">3</marrid>
+    </user>
+
+    <user name="user02">
+        <age>23</age>
+        <password u="yes">asdfhaha</password>
+        <sex>m</sex>
+        <marrid isTrue="yes">2</marrid>
+    </user>
+    <user name="user03">
+        <age>25</age>
+        <password u="yes">12345haha</password>
+        <sex>m</sex>
+        <marrid isTrue="no">0</marrid>
+        <shopping_list>
+            <iphone>6000</iphone>
+            <samsung>5000</samsung>
+        </shopping_list>
+    </user>
+
+</data>
