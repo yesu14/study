@@ -14,11 +14,8 @@ str_wrong_msg = '''
 # a12345678901234567890
 import re
 
-print(re.search("ab*","abbbbbbbbbbcccccccabccccc"))
-
 def check_username(username):
-    # regExp = "^[\D+{7}]{7,20}$"
-    # regExp = "^[a-z0-9A-Z]*{7,20}$"
+    # regExp = "^[a-zA-Z][a-zA-Z0-9]{6,14}$"
     regExp = "^[a-zA-Z]{1}[a-zA-Z0-9]{6,14}$"
     # print(re.search(regExp,username))
     if re.search(regExp,username):

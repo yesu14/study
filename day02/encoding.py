@@ -11,10 +11,10 @@ print(type(2**64))
 import os
 dir = os.popen("dir").read()
 print(dir)
-# if os.path.exists("../day03") == False:
+# if os.path.exists("../day04") == False:
 #     print("文件夹day03不存在")
-#     os.mkdir("../day03")
-#     if os.path.exists("../day03"):
+#     os.mkdir("../day04")
+#     if os.path.exists("../day04"):
 #         print("文件夹day03创建成功！")
 # else:
 #     print("文件夹03已存在")

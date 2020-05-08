@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RG银行系统</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='plugins/layui/css/layui.css')}}">
+    <link href="{{url_for('static',filename='css/main.css')}}" rel="stylesheet">
+</head>
+<body>
+<div class="main_ui">
+    <div class="main_body">
+        <div class="left">
+            <h1>RG银行系统</h1>
+            <div class="describe">
+                <p>1.可以转账，体现<br/>
+                    2.可购买商品<br/>
+                    3.可以还款<br/>
+                </p>
+            </div>
+
+        </div>
+        <div class="right">
+            <div class="div_form">
+
+                <h1>登录</h1>
+                <form>
+                    <input type="text" placeholder="请输入用户名" class="layui-input">
+                    <input type="password" placeholder="请输入密码" class="layui-input">
+                    <button class="layui-btn layui-btn-danger layui-btn-fluid">登录</button>
+                </form>
+                <div class="other">
+                    <a class="a_left" href="buyer_login.html">买家系统</a>
+                    <a class="a_right" href="seller_login.html">卖家系统</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script>
+
+</script>
+</html>

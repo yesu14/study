@@ -1,0 +1,67 @@
+.main_ui{
+    width: 800px;
+    height: 450px;
+    padding: 0;
+    margin: 0 auto;
+}
+.main_body {
+    width: 800px;
+    height: 400px;
+    margin-top: 50px;
+    padding: 0;
+    border: 2px solid #9C1A1C;
+}
+
+
+.left{
+    width: 50%;
+    height: 400px;
+    background-color: #FFFF00;
+    float: left;
+    text-align: center;
+}
+.left h1{
+    margin-top: 50px;
+}
+.left .describe{
+    width: 200px;
+    margin: 0 auto;
+}
+.describe p{
+    margin-top: 30px;
+    text-align: left;
+}
+.right{
+    width: 50%;
+    height: 400px;
+    /*background-color: #777620;*/
+    float: right;
+}
+
+.right .div_form{
+    width: 200px;
+    margin: 0 auto;
+    text-align: left;
+}
+.right .div_form h1{
+    margin-top: 50px;
+}
+
+.right .div_form form{
+    margin-top: 30px;
+}
+
+.right .div_form form input{
+    margin-bottom: 10px;
+}
+
+.right .div_form .other{
+    margin-top: 20px;
+}
+
+.right .div_form .a_left{
+    float: left;
+}
+.right .div_form .a_right{
+    float: right;
+}

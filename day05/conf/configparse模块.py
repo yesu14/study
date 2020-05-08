@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 # @Author: Meiyan Jin
 # @Time: 2020/4/30 16:28
-# @File: configparse模块.py
+# @File: configparse模块.py01
 # @Software: PyCharm
 import configparser
 config = configparser.ConfigParser()

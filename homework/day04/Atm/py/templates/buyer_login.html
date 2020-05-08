@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RG买家系统</title>
+
+    <link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<!--    <link rel="stylesheet" href="{{url_for('static',filename='plugins/layui/css/layui.css')}}">-->
+<!--    <link href="{{url_for('static',filename='css/main.css')}}" rel="stylesheet">-->
+    <link href="../static/css/main.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="main_ui">
+    <div class="main_body">
+        <div class="left">
+            <h1>RG买家系统</h1>
+            <div class="describe">
+                <p>1.可以转账，体现<br/>
+                    2.可购买商品<br/>
+                    3.可以还款<br/>
+                </p>
+            </div>
+
+        </div>
+        <div class="right">
+            <div class="div_form">
+
+                <h1>登录</h1>
+                <form>
+                    <input type="text" placeholder="请输入用户名" class="layui-input">
+                    <input type="password" placeholder="请输入密码" class="layui-input">
+                    <button class="layui-btn layui-btn-danger layui-btn-fluid" onclick="sub()">登录</button>
+                </form>
+                <div class="other">
+                    <a class="a_left" href="seller_login.html">卖家系统</a>
+                    <a class="a_right" href="bank_login.html">银行系统</a>
+                    <a onclick="sub()" href="javascript:;">测试</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<!--<script src="{{url_for('static',filename='js/jquery-3.5.0.js')}}"> </script>-->
+<script src="../static/js/jquery-3.5.0.js"> </script>
+<script>
+    function sub() {
+        console.log("传参数！")
+       $.ajax(
+            {
+                url: "http://127.0.0.1:5858/login",
+                type: "POST",
+                dataType: "json",
+                data: { username: "shanghai", password: "123" },
+                success: function (result) {
+                    // alert(result);
+                    console.log('result='+result)
+                    window.location.href = "login_page"
+                },
+                error: function (xhr, status, p3, p4) {
+                    // var err = "Error " + " " + status + " " + p3;
+                    // if (xhr.responseText && xhr.responseText[0] == "{")
+                    //     err = JSON.parse(xhr.responseText).message;
+                    // alert(err);
+                }
+            });
+    }
+
+</script>
+</html>
