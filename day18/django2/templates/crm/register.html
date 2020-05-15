@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1>注册页面</h1>
+    <form action="/register" method="post" enctype="multipart/form-data">
+        <p>
+            <label for="username">用户名：</label>
+            <input type="text" id="username" name="username">
+        </p>
+        <p>
+            <label for="password">密码：</label>
+            <input type="password" id="password" name="password">
+        </p>
+        <p>
+            <label for="r1">男</label>
+            <input type="radio" name="sex" value="1" id="r1">
+            <label for="r2">女</label>
+            <input type="radio" name="sex" value="0" id="r2">
+        </p>
+        <p>
+            <label for="c1">网球</label>
+            <input type="checkbox" name="faver" value="网球" id="c1">
+            <label for="c2">篮球</label>
+            <input type="checkbox" name="faver" value="篮球" id="c2">
+            <label for="c3">足球</label>
+            <input type="checkbox" name="faver" value="足球" id="c3">
+        </p>
+        <p>
+            <select name="city" multiple>
+                <option value="北京">北京</option>
+                <option value="上海">上海</option>
+                <option value="广州">广州</option>
+            </select>
+        </p>
+        <p>
+            <label for="file1">1.上传文件：</label><input type="file" name="files" id="file1"><br>
+            <label for="file2">2.上传文件：</label><input type="file" name="files" id="file2"><br>
+            <label for="file3">3.上传文件：</label><input type="file" name="files" id="file3"><br>
+        </p>
+        <p>
+            <input type="submit">
+        </p>
+    </form>
+    <table border="solid">
+        <tr>
+            <th>用户名</th>
+            <th>密码</th>
+            <th>性别</th>
+            <th>爱好</th>
+            <th>城市</th>
+        </tr>
+        {% for info in user_info %}
+            <tr>
+                <td>{{ info.username }}</td>
+                <td>{{ info.password }}</td>
+                {% if info.sex == "1" %}
+                    <td>男</td>
+                {% else %}
+                    <td>女</td>
+                {% endif %}
+
+                <td>
+                    {{ info.faver }}
+                </td>
+
+                <td>
+                    {{ info.city }}
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
+</body>
+</html>

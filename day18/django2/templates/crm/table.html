@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>table</title>
+</head>
+<body>
+<div>
+    <form action="/table" method="post">
+        <input type="text" name="username" placeholder="用户名">
+        <input type="text" name="age" placeholder="年龄">
+        <input type="text" name="sex" placeholder="性别">
+        <input type="text" name="email" placeholder="email">
+        <input type="submit">
+    </form>
+</div>
+<div>
+    <table border="solid">
+        <tr>
+            <th>用户名</th>
+            <th>年龄</th>
+            <th>性别</th>
+            <th>邮箱</th>
+        </tr>
+        {% for row in user_list %}
+            <tr>
+                <td>{{ row.username }}</td>
+                <td>{{ row.age }}</td>
+                <td>{{ row.sex }}</td>
+                <td>{{ row.email }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</div>
+</body>
+</html>
