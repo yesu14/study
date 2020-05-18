@@ -80,7 +80,7 @@ from django.views import View
 class Register(View):
 
     def dispatch(self, request, *args, **kwargs):
-        print("before...")
+        print("进入注册页面before...")
         result = super(Register, self).dispatch(request, *args, **kwargs)
         print("after...")
         return result
@@ -91,6 +91,9 @@ class Register(View):
 
     def post(self, request):
         print(request.method)
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
         return render(request, "crm/register.html")
 
 

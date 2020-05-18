@@ -1,1 +1,59 @@
-python manage.py startapp appname
+创建django项目
+分发 app urls
+配置settings
+    1.INSTALLED_APPS 添加app名称
+    2.MIDDLEWARE 注释CsrfViewMiddleware
+    3.配置数据库
+    4.配置静态文件目录
+        STATICFILES_DIRS = (
+            os.path.join(BASE_DIR , 'static'),
+        )
+     5.主程序init.py里添加 mysql配置
+        import pymysql
+        pymysql.install_as_MySQLdb()
+
+     6.如出现错误django.core.exceptions.ImproperlyConfigured: mysqlclient 1.3.13 or newer is required; you have 0.9.3.
+        注释venv/Lib/site-packages/django/db/backends/mysql/base.py:37 下的
+            # if version < (1, 3, 13):
+            #     raise ImproperlyConfigured('mysqlclient 1.3.13 or newer is required; you have %s.' % Database.__version__)
+
+
+
+iframe 跨域拒绝访问问题
+    1.settings里配置 X_FRAME_OPTIONS = 'ALLOWALL url'
+    2.views.py里 添加 页面用装饰器@xframe_options_exempt
+        from django.views.decorators.clickjacking import xframe_options_exempt
+        @xframe_options_exempt
+        def right(request):
+            print('进入右侧页')
+            return render(request, "summer/right.html")
+
+
+
+创建app python manage.py startapp appname
+
+
+
+
+python3 没有mysql模块
+创建数据库文件  makemigrations
+创建表 migrations
+
+时间更新：auto_now_add
+    生效
+        obj = UserInfo.objects.filter(id=1).first()
+        obj.username = 'user03'
+        obj.save()
+    不生效obj = UserInfo.objects.filter(id=1).update(username='user03')
+
+admin系统编辑表数据
+    app下 admin.py 添加 想要编辑的表
+    from cms import models
+    admin.site.register(models.UserInfo)
+
+
+models字段属性
+    verbose_name = "用户名"
+    error_messages = "自定义错误信息"
+    help_txt = "自定义提示"
+    validators = "自定义验证"

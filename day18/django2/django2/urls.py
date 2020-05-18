@@ -18,7 +18,7 @@ from django.urls import path,re_path
 from django.urls import include
 
 urlpatterns = [
-    path('admin',admin.site.urls),
+    path('admin/',admin.site.urls),
     path('cms/',include('cms.urls')),
     path('crm/',include('crm.urls')),
 ]
